@@ -22,8 +22,9 @@ Route::get('/', function () {
 Route::get('/transactions', [TransactionController::class, 'index'])->middleware(['auth'])->name('transactions');
 Route::post('/transactions/create', [TransactionController::class, 'create'])->middleware(['auth'])->name('new-transaction');
 Route::post('/transactions/{transactionRef}/refund', [TransactionController::class, 'refund'])->middleware(['auth'])->name('refund-transaction');
+
 Route::get('/transaction/finalized', function (Request $request) {
-    return view('transaction-done');
+    return view('transaction-done')->with('response', $request->all());
 });
 Route::get('/transactions/options', function (Request $request) {
     return view('transaction-options');

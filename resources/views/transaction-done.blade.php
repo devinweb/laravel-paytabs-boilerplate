@@ -14,8 +14,16 @@
     }
 </style>
 <body class="w-full">
-    <div class="font-bold text-lg w-full text-center my-8">
-    تمت عملية الدفع بنجاح 
+    <div class="font-bold text-lg w-full text-center my-24">
+        @if(isset($response['respStatus']) && $response['respStatus'] == 'A')
+        <p class="text-green-500">
+            تمت عملية الدفع بنجاح 
+        </p>
+        @else
+        <p class="text-red-500">
+            حدث خطأ أثناء عملية الدفع
+        </p>
+        @endif
     </div>
    
 </body>
