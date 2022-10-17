@@ -4,7 +4,7 @@
           <h2 class="font-semibold text-xl text-gray-800 leading-tight">
               {{ __('سجل المدفوعات') }}
           </h2>
-          <a href="{{route('new-transaction')}}" class="px-4 py-1 rounded-md border border-gray-900">عملية
+          <a href="{{route('transaction-options')}}" class="px-4 py-1 rounded-md border border-gray-900">عملية
               جديدة</a>
 
       </div>

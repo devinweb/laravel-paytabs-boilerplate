@@ -9,46 +9,27 @@ use Devinweb\LaravelPaytabs\Facades\LaravelPaytabsFacade;
 use Devinweb\LaravelPaytabs\Models\Transaction;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use App\Actions\CreatePaymentPage;
+use App\Actions\RefundTransaction;
+use Illuminate\Http\Request;
 
 class TransactionController extends Controller
 {
-
     public function index()
     {
         $transactions = Transaction::paid()->withCount('children')->latest()->paginate(30);
         return view('transactions')->with('transactions', $transactions);
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        $transaction = LaravelPaytabsFacade::setCustomer(Auth::user())
-            ->setCart($this->prepareCartData())
-            ->framedPage()
-            ->hideShipping()
-            ->hideBilling()
-            ->addBilling(new PaytabsBilling)
-            ->setRedirectUrl(config('app.url') . "/transaction/finalized", )
-            ->initiate(TransactionType::SALE, TransactionClass::ECOM);
+        $transaction = app(CreatePaymentPage::class)($request);
 
         return view('new-transaction')->with('transaction', $transaction);
-
     }
     public function refund($transactionRef)
     {
-        $response = LaravelPaytabsFacade::setTransactionRef($transactionRef)
-            ->setCart($this->prepareCartData())
-            ->setCustomer(Auth::user())
-            ->followUpTransaction(TransactionType::REFUND, TransactionClass::ECOM);
+        $response = app(RefundTransaction::class)($transactionRef);
         return $response;
     }
-
-    private function prepareCartData(): array
-    {
-        return [
-            'id' => Str::random(6),
-            'amount' => 80,
-            'description' => "Cart description",
-        ];
-    }
-
 }
