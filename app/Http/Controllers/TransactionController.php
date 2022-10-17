@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Billing\PaytabsBilling;
 use Devinweb\LaravelPaytabs\Enums\TransactionClass;
 use Devinweb\LaravelPaytabs\Enums\TransactionType;
 use Devinweb\LaravelPaytabs\Facades\LaravelPaytabsFacade;
@@ -24,6 +25,8 @@ class TransactionController extends Controller
             ->setCart($this->prepareCartData())
             ->framedPage()
             ->hideShipping()
+            ->hideBilling()
+            ->addBilling(new PaytabsBilling)
             ->setRedirectUrl(config('app.url') . "/transaction/finalized", )
             ->initiate(TransactionType::SALE, TransactionClass::ECOM);
 

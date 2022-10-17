@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\TransactionController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,7 +22,7 @@ Route::get('/', function () {
 Route::get('/transactions', [TransactionController::class, 'index'])->middleware(['auth'])->name('transactions');
 Route::get('/transactions/create', [TransactionController::class, 'create'])->middleware(['auth'])->name('new-transaction');
 Route::post('/transactions/{transactionRef}/refund', [TransactionController::class, 'refund'])->middleware(['auth'])->name('refund-transaction');
-Route::get('/transaction/finalized', function () {
+Route::get('/transaction/finalized', function (Request $request) {
     return view('transaction-done');
 });
 
